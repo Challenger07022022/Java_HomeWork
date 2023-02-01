@@ -1,5 +1,8 @@
-package algorithms;
+package algorithms.HW2;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class HW2 {
@@ -12,15 +15,28 @@ public class HW2 {
 Сортировать нужно в этом же порядке (т.е. Lenuvo имеет наивысший приоритет).
 Отсортировать по стоимости, по памяти, по перечислению (в таком порядке)
      */
+
     public static final int[] PRICES = new int[]{100, 200, 300, 400, 500, 600, 700, 800};
-    private static void randomPriceDemo(){
-        for (int i = 0; i < 10; i++) {
-            int randomIndex = ThreadLocalRandom.current().nextInt(PRICES.length); // [0 PRICES.length);
-            System.out.println(PRICES[randomIndex]);
-        }
-    }
+    public static final int[] RAMS = new int[]{4, 8, 16, 20, 24, 28, 32};
 
     public static void main(String[] args) {
-        randomPriceDemo();
+        List<Notebook> notebooks = new ArrayList<>();
+        for (int i = 0; i < 10_000; i++) {
+            notebooks.add(new Notebook(
+                    PRICES[ThreadLocalRandom.current().nextInt(PRICES.length)],
+                    RAMS[ThreadLocalRandom.current().nextInt(RAMS.length)],
+                    Brand.values()[ThreadLocalRandom.current().nextInt(Brand.values().length)]));
+        }
+
+
+        //printList(notebooks);
+        notebooks.sort(Comparator.comparing(Notebook::getPRICE).thenComparing(Notebook::getRAM).thenComparing(Notebook::getBRAND));
+        printList(notebooks);
+    }
+
+    static public void printList(List<Notebook> list) {
+        for (Notebook notebook : list) {
+            System.out.println(notebook);
+        }
     }
 }
